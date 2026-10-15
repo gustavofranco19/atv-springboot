@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import biblioteca.biblioteca.Dto.LivroPostPutDto;
@@ -42,6 +43,20 @@ public class LivroV1Controller {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(livroCrudService.buscarTodosLivros());
+    }
+
+    @GetMapping("/{isbn}")
+    public ResponseEntity<List<LivroResponseDto>> buscarLivrosPorIsbn(@PathVariable String isbn) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(livroCrudService.buscarLivrosPorIsbn(isbn));
+    }
+
+    @GetMapping("/{titulo}")
+    public ResponseEntity<List<LivroResponseDto>> buscarLivrosPorTitulo(@PathVariable String titulo) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(livroCrudService.buscarLivrosPorTitulo(titulo));
     }
 
     @PutMapping("/{id}")

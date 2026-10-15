@@ -22,16 +22,19 @@ public class LivroPostPutDto {
     @NotBlank
     private String titulo;
 
-    @JsonProperty("autor")
-    @NotBlank
-    private String autor;
-
     @JsonProperty("ano")
     @Positive
+    @NotBlank
     private int ano;
 
     @JsonProperty("edicao")
     @NotBlank
-    private String edicao;
+    @Positive
+    private int edicao;
+
+    @JsonProperty("idAutor")
+    @NotBlank
+    private Long idAutor;
+
 }
 

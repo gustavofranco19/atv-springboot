@@ -16,10 +16,10 @@ import java.util.List;
 public class AutorCrudPadraoService implements AutorCrudService {
 
     @Autowired
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     @Autowired
-    AutorRepository autorRepository;
+    private AutorRepository autorRepository;
 
     @Override
     public AutorResponseDto criarAutor(AutorPostPutDto autorPostPutDto) {
