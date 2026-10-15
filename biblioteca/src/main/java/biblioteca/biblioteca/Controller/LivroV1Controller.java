@@ -6,13 +6,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import biblioteca.biblioteca.Dto.LivroPostPutDto;
 import biblioteca.biblioteca.Dto.LivroResponseDto;
 import biblioteca.biblioteca.Service.LivroCrudService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -45,14 +44,14 @@ public class LivroV1Controller {
                 .body(livroCrudService.buscarTodosLivros());
     }
 
-    @GetMapping("/{isbn}")
+    @GetMapping("/isbn{isbn}")
     public ResponseEntity<List<LivroResponseDto>> buscarLivrosPorIsbn(@PathVariable String isbn) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(livroCrudService.buscarLivrosPorIsbn(isbn));
     }
 
-    @GetMapping("/{titulo}")
+    @GetMapping("/titulo{titulo}")
     public ResponseEntity<List<LivroResponseDto>> buscarLivrosPorTitulo(@PathVariable String titulo) {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -75,6 +74,4 @@ public class LivroV1Controller {
                 .status(HttpStatus.NO_CONTENT)
                 .build();
     }
-    
-
 }

@@ -12,7 +12,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import biblioteca.biblioteca.Dto.LivroPostPutDto;
 import biblioteca.biblioteca.Dto.LivroResponseDto;
+import biblioteca.biblioteca.Model.Autor;
 import biblioteca.biblioteca.Model.Livro;
+import biblioteca.biblioteca.Repository.AutorRepository;
 import biblioteca.biblioteca.Repository.LivroRepository;
 
 @Service
@@ -24,17 +26,38 @@ public class LivroCrudPadraoService implements LivroCrudService {
     @Autowired
     private LivroRepository livroRepository;
 
+    @Autowired
+    private AutorRepository autorRepository;
+
+    private Autor obterAutorExistente(Long id){
+        Autor autor = autorRepository.findById(id)
+            .orElseThrow(() -> new 
+            ResponseStatusException(HttpStatus.NOT_FOUND, "Autor não encontrado"));
+            return autor;
+    }
+
     @Override
     public LivroResponseDto criarLivro(LivroPostPutDto livroPostPutDto) {
         Livro livro = modelMapper.map(livroPostPutDto, Livro.class);
-        return modelMapper.map(livroRepository.save(livro), LivroResponseDto.class);
+        Autor autor = obterAutorExistente(livroPostPutDto.getIdAutor());
+        livro.setIdLivro(null);
+        livro.setAutor(autor);
+        LivroResponseDto response = modelMapper.map(livroRepository.save(livro), LivroResponseDto.class);
+        response.setIdAutor(autor.getId());
+        return response;
     }
 
     @Override
     public List<LivroResponseDto> buscarTodosLivros() {
         return livroRepository.findAll()
                 .stream()
-                .map(livro -> modelMapper.map(livro, LivroResponseDto.class))
+                .map(livro -> {
+                    LivroResponseDto response = modelMapper.map(livro, LivroResponseDto.class);
+                    if(livro.getAutor() != null){
+                        response.setIdAutor(livro.getAutor().getId());
+                    }
+                    return response;
+                })
                 .toList();
     }
 
@@ -44,7 +67,11 @@ public class LivroCrudPadraoService implements LivroCrudService {
         List<LivroResponseDto> livrosResponse = new ArrayList<>();
         for(Livro livro : livros){
             if(livro.getIsbn().toLowerCase().contains(isbn.toLowerCase())){
-                livrosResponse.add(modelMapper.map(livro, LivroResponseDto.class));
+                LivroResponseDto response = modelMapper.map(livro, LivroResponseDto.class);
+                if(livro.getAutor() != null){
+                    response.setIdAutor(livro.getAutor().getId());
+                }
+                livrosResponse.add(response);
             }
         }
         return livrosResponse;
@@ -55,8 +82,12 @@ public class LivroCrudPadraoService implements LivroCrudService {
         List<Livro> livros = livroRepository.findAll();
         List<LivroResponseDto> livrosResponse = new ArrayList<>();
         for(Livro livro : livros){
-            if(livro.getIsbn().toLowerCase().contains(titulo.toLowerCase())){
-                livrosResponse.add(modelMapper.map(livro, LivroResponseDto.class));
+            if(livro.getTitulo().toLowerCase().contains(titulo.toLowerCase())){
+                LivroResponseDto response = modelMapper.map(livro, LivroResponseDto.class);
+                if(livro.getAutor() != null){
+                    response.setIdAutor(livro.getAutor().getId());
+                }
+                livrosResponse.add(response);
             }
         }
         return livrosResponse;
@@ -67,8 +98,13 @@ public class LivroCrudPadraoService implements LivroCrudService {
     public LivroResponseDto atualizarLivro(Long id, LivroPostPutDto livroPostPutDto) {
         Livro livro = livroRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado"));
+        Autor autor = obterAutorExistente(id);
         modelMapper.map(livroPostPutDto, livro);
-        return modelMapper.map(livroRepository.save(livro), LivroResponseDto.class);
+        livro.setIdLivro(id);
+        livro.setAutor(autor);
+        LivroResponseDto response = modelMapper.map(livroRepository.save(livro), LivroResponseDto.class);
+        response.setIdAutor(autor.getId());
+        return response;
     }
 
     @Override
@@ -78,5 +114,6 @@ public class LivroCrudPadraoService implements LivroCrudService {
         }
         livroRepository.deleteById(id);
     }
-
 }
+
+

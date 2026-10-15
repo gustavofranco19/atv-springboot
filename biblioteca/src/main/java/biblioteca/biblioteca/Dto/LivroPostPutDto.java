@@ -2,6 +2,7 @@ package biblioteca.biblioteca.Dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,16 +25,14 @@ public class LivroPostPutDto {
 
     @JsonProperty("ano")
     @Positive
-    @NotBlank
     private int ano;
 
     @JsonProperty("edicao")
-    @NotBlank
     @Positive
     private int edicao;
 
     @JsonProperty("idAutor")
-    @NotBlank
+    @NotNull 
     private Long idAutor;
 
 }
