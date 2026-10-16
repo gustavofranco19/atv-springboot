@@ -110,7 +110,7 @@ public class LivroCrudPadraoService implements LivroCrudService {
     @Override
     public void removerLivro(Long id) {
         if(!livroRepository.existsById(id)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Autor não encontrado");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado");
         }
         livroRepository.deleteById(id);
     }

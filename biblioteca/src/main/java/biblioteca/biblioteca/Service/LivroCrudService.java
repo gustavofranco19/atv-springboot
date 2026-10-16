@@ -2,7 +2,6 @@ package biblioteca.biblioteca.Service;
 
 import java.util.List;
 
-import biblioteca.biblioteca.Dto.AutorResponseDto;
 import biblioteca.biblioteca.Dto.LivroPostPutDto;
 import biblioteca.biblioteca.Dto.LivroResponseDto;
 
