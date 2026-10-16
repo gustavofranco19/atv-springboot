@@ -17,6 +17,7 @@ public class LivroPostPutDto {
 
     @JsonProperty("isbn")
     @NotBlank
+    @NotNull
     private String isbn;
 
     @JsonProperty("titulo")
@@ -25,11 +26,12 @@ public class LivroPostPutDto {
 
     @JsonProperty("ano")
     @Positive
-    private int ano;
+    @NotNull 
+    private Integer ano;
 
     @JsonProperty("edicao")
     @Positive
-    private int edicao;
+    private Integer edicao;
 
     @JsonProperty("idAutor")
     @NotNull 

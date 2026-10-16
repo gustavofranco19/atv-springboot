@@ -26,8 +26,8 @@ public class LivroResponseDto {
     private Long idAutor;
 
     @JsonProperty("ano")
-    private int ano;
+    private Integer ano;
 
     @JsonProperty("edicao")
-    private int edicao;
+    private Integer edicao;
 }
